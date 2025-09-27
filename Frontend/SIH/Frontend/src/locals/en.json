@@ -1,0 +1,419 @@
+{
+     "sessionExpired": "Session expired. Please login again.",
+    "logoutSuccess": "Logged out successfully",
+    "logoutFailed": "Logout failed",
+    "languageChanged": "Language changed successfully",
+    "emergencyModeActivated": "Emergency mode activated",
+    "loggingOut": "Logging out...",
+    "logout": "Logout",
+    "nav":{
+ 
+      "govAlert": "Official Government Portal",
+      "emergencyHelpline": "Emergency Helpline",
+      "quickActions": "Quick Actions",
+      "selectLanguage": "Select Language",
+      "notifications": "Notifications",
+      "markAllAsRead": "Mark all as read",
+      "noNotifications": "No notifications",
+      "dashboard": "Dashboard",
+      "heatmap": "Heat Map",
+      "awarenessHub": "Awareness Hub",
+      "govServices": "Government Services",
+      "govSchemes": "Government Schemes",
+      "reportIssue": "Report Issue",
+      "myReports": "My Reports",
+      "trackComplaint": "Track Complaint",
+      "profile": "Profile",
+      "helpSupport": "Help & Support",
+      "emergencyHelp": "Emergency Help",
+      "settings": "Settings",
+      "login": "Login",
+      "signUp": "Sign Up"
+
+    }
+,
+
+
+  "home": {
+    "hero": {
+      "badge": "Official Government Portal",
+      "title": "Digital Citizen Services Platform",
+      "subtitle": "Report civic issues and cyber crimes in 2 minutes. Fast, secure, and efficient government-citizen interface.",
+      "cta": {
+        "primary": "Report Civic Issue",
+        "cyber": "Cyber Crime Report"
+      }
+    },
+    "stats": {
+      "reports": "Reports Filed",
+      "resolved": "Issues Resolved",
+      "authorities": "Government Departments",
+      "satisfaction": "Citizen Satisfaction"
+    },
+    "quickActions": {
+      "title": "Quick Services",
+      "subtitle": "Get your issues resolved quickly with our streamlined process",
+      "civic": {
+        "title": "Civic Issue Report",
+        "description": "Report infrastructure, sanitation, and public utility issues"
+      },
+      "cyber": {
+        "title": "Cyber Crime Report", 
+        "description": "Report online fraud, hacking, and digital security issues"
+      },
+      "track": {
+        "title": "Track Report Status",
+        "description": "Check the status of your submitted reports in real-time"
+      },
+      "time": "Time Required:",
+      "minutes": "minutes",
+      "minute": "minute"
+    },
+    "emergency": {
+      "title": "Emergency Helpline Numbers",
+      "subtitle": "Immediate assistance available 24/7",
+      "numbers": [
+        {
+          "number": "100",
+          "service": "Police",
+          "description": "Emergency Police Help"
+        },
+        {
+          "number": "101", 
+          "service": "Fire Brigade",
+          "description": "Fire Emergency"
+        },
+        {
+          "number": "102",
+          "service": "Ambulance", 
+          "description": "Medical Emergency"
+        },
+        {
+          "number": "112",
+          "service": "National Emergency",
+          "description": "Single Emergency Number"
+        }
+      ]
+    },
+    "features": {
+      "title": "Why Choose Our Platform?",
+      "items": [
+        {
+          "title": "2-Minute Reporting",
+          "description": "Simple form that takes less than 2 minutes to complete"
+        },
+        {
+          "title": "Real-time Tracking", 
+          "description": "Track your report status with live updates"
+        },
+        {
+          "title": "Multiple Departments",
+          "description": "Connected with all government departments"
+        },
+        {
+          "title": "Secure & Private",
+          "description": "Your data is protected with government-grade security"
+        }
+      ],
+      "demoTitle": "Easy-to-Use Interface",
+      "demoDescription": "Our platform is designed for citizens of all technical backgrounds"
+    }
+  }
+
+
+,
+  
+  "profile": {
+    "title": "Citizen Profile",
+    "subtitle": "Manage your personal information and preferences",
+    "loading": "Loading your profile...",
+    "fetchFailed": "Failed to load profile",
+    "updateSuccess": "Profile updated successfully",
+    "updateFailed": "Failed to update profile",
+    "updating": "Updating...",
+    "update": "Update Profile",
+    "cancel": "Cancel",
+    "userNotFound": "User not found",
+    "userNotFoundHelp": "Please login to access your profile",
+    "name": "Full Name",
+    "nameRequired": "Full name is required",
+    "nameTooShort": "Name must be at least 2 characters",
+    "namePlaceholder": "Enter your full name",
+    "email": "Email Address",
+    "emailRequired": "Email address is required",
+    "invalidEmail": "Please enter a valid email address",
+    "emailPlaceholder": "Enter your email address",
+    "phone": "Phone Number",
+    "invalidPhone": "Please enter a valid phone number",
+    "phonePlaceholder": "Enter your phone number",
+    "address": "Street Address",
+    "addressPlaceholder": "Enter your street address",
+    "city": "City",
+    "cityPlaceholder": "Enter your city",
+    "postalCode": "Postal Code",
+    "invalidPostalCode": "Please enter a valid postal code",
+    "postalCodePlaceholder": "Enter postal code",
+    "country": "Country",
+    "selectCountry": "Select your country",
+    "userId": "Citizen ID",
+    "userIdHelp": "Your unique government identification number",
+    "role": "Account Type",
+    "admin": "Administrator",
+    "user": "Citizen User",
+    "status": "Account Status",
+    "active": "Active",
+    "lastUpdated": "Last updated",
+    "memberSince": "Member since",
+    "personalInfo": "Personal Information",
+    "contactInfo": "Contact Information",
+    "preferences": "Preferences",
+    "security": "Security",
+    "fullName": "Full Name",
+    "language": "Preferred Language",
+    "notifications": "Enable notifications",
+    "notificationsHelp": "Receive important updates and alerts",
+    "newsletter": "Subscribe to newsletter",
+    "newsletterHelp": "Get latest government news and updates",
+    "securityTips": "Security Tips",
+    "securityTipsHelp": "Keep your account secure by regularly updating your password and enabling two-factor authentication",
+    "changePassword": "Change Password",
+    "changePasswordHelp": "Update your password regularly",
+    "twoFactor": "Two-Factor Authentication",
+    "twoFactorHelp": "Add an extra layer of security",
+    "deleteAccount": "Delete Account",
+    "accountActions": "Account Management",
+    "accountActionsHelp": "Manage your account security and preferences",
+    "verified": "Identity Verified",
+    "verifiedHelp": "Your identity has been successfully verified",
+    "lastLogin": "Last Login",
+    "never": "Never",
+    "support": "24/7 Support",
+    "supportHelp": "Get help anytime from our support team",
+    "tabs": {
+      "personal": "Personal",
+      "contact": "Contact",
+      "preferences": "Preferences",
+      "security": "Security"
+    }
+  },
+  "countries": {
+    "US": "United States",
+    "CA": "Canada",
+    "UK": "United Kingdom",
+    "IN": "India",
+    "AU": "Australia",
+    "DE": "Germany",
+    "FR": "France",
+    "JP": "Japan"
+  },
+ 
+  "common": {
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "success": "Success",
+    "error": "Error",
+    "loading": "Loading...",
+    "required": "Required",
+    "optional": "Optional"
+  }
+
+
+,
+"file":{
+  "report": {
+    "title": "File a New Report",
+    "subtitle": "Help make your community safer by reporting issues",
+    "titleLabel": "Report Title",
+    "titlePlaceholder": "Brief description of the issue",
+    "descriptionLabel": "Detailed Description",
+    "descriptionPlaceholder": "Please provide as many details as possible about the issue...",
+    "categoryLabel": "Category",
+    "categoryPlaceholder": "Select Category",
+    "categories": {
+      "cyberCrime": "Cyber Crime",
+      "civicIssue": "Civic Issue",
+      "other": "Other"
+    },
+    "subcategoryLabel": "Subcategory",
+    "subcategoryPlaceholder": "Select Subcategory",
+    "subcategories": {
+      "pothole": "Pothole",
+      "garbage": "Garbage",
+      "streetLight": "Street Light",
+      "waterSupply": "Water Supply",
+      "roadSafety": "Road Safety"
+    },
+
+      "startVoice": "Start Voice Input",
+      "stopVoice": "Stop Voice Input",
+      "listening": "Listening...",
+      "voiceStarted": "Voice input started. Speak now.",
+      "voiceStopped": "Voice input stopped.",
+      "voiceError": "Error with voice recognition.",
+      "voiceNotSupported": "Voice input is not supported in your browser.",
+      "microphonePermission": "Microphone permission is required for voice input.",
+    
+    "location": "Location",
+    "fetchingLocation": "Fetching your location...",
+    "locationDetected": "Location detected",
+    "locationNotAvailable": "Location not available. Please enable location services for accurate reporting.",
+    "locationWarning": "Location access denied. Please enable location services for better reporting.",
+    "locationNotSupported": "Geolocation is not supported by this browser.",
+    "photoLabel": "Add Photo Evidence (Optional)",
+    "uploadFromDevice": "Upload from device",
+    "fileRequirements": "JPG, PNG up to 5MB",
+    "takePhoto": "Take a photo",
+    "useCamera": "Use your camera",
+    "capturePhoto": "Capture Photo",
+    "invalidFileType": "Please select an image file",
+    "fileSizeError": "Image size should be less than 5MB",
+    "cameraError": "Could not access camera. Please check permissions.",
+    "analyzing": "Analyzing your report...",
+    "successMessage": "Report filed successfully! AI detected category: {{category}}",
+    "submitError": "Failed to file report. Please try again.",
+    "submitButton": "Submit Report",
+    "processing": "Processing..."
+  },
+  "common": {
+    "cancel": "Cancel"
+  }
+}
+,
+
+  "user-dashboard": {
+    "dashboard": {
+      "title": "Citizen Services Dashboard",
+      "welcome": "Welcome, Citizen",
+      "fetchError": "Unable to load your reports. Please try again.",
+      "loadingTitle": "Loading Dashboard",
+      "loadingMessage": "Please wait while we load your citizen services information...",
+      "errorTitle": "Connection Error",
+      "tryAgain": "Try Again",
+      "reportCount": "You have {{count}} active service requests",
+      "emptyMessage": "No active service requests found",
+      "newReportButton": "File New Service Request",
+      "searchPlaceholder": "Search service requests...",
+      "statsOverview": "Service Request Statistics",
+      "priorityOverview": "Priority Level Overview",
+      "departmentOverview": "Department Performance",
+      "quickStats": {
+        "citizenId": "Citizen ID",
+        "region": "Service Region",
+        "defaultRegion": "National Capital Region",
+        "memberSince": "Registered Since"
+      },
+      "stats": {
+        "total": "Total Requests",
+        "pending": "Pending Review",
+        "resolved": "Resolved",
+        "inProgress": "In Progress"
+      },
+      "filters": {
+        "all": "All Requests",
+        "pending": "Pending",
+        "inProgress": "In Progress",
+        "resolved": "Resolved",
+        "allDepartments": "All Departments",
+        "allPriorities": "All Priorities",
+        "high": "High Priority",
+        "medium": "Medium Priority",
+        "low": "Low Priority"
+      },
+      "sort": {
+        "newest": "Newest First",
+        "oldest": "Oldest First",
+        "priority": "By Priority",
+        "title": "By Title"
+      },
+      "timeRange": {
+        "all": "All Time",
+        "today": "Today",
+        "week": "This Week",
+        "month": "This Month"
+      },
+      "noResults": {
+        "title": "No Matching Service Requests",
+        "message": "Try adjusting your filters or search terms",
+        "clearFilters": "Clear All Filters"
+      },
+      "noReports": {
+        "title": "No Service Requests Filed",
+        "message": "You haven't filed any service requests yet. Start by submitting a new request for government services, infrastructure issues, or public concerns.",
+        "button": "File Your First Service Request",
+        "feature1": {
+          "title": "Quick Submission",
+          "description": "File requests in minutes with our streamlined process"
+        },
+        "feature2": {
+          "title": "Track Progress",
+          "description": "Monitor your request status in real-time"
+        },
+        "feature3": {
+          "title": "Department Coordination",
+          "description": "Automatic routing to relevant government departments"
+        }
+      },
+      "tips": {
+        "title": "Citizen Service Guidelines",
+        "tip1": {
+          "title": "Provide Detailed Information",
+          "description": "Include specific locations, descriptions, and photos for faster resolution"
+        },
+        "tip2": {
+          "title": "Monitor Response Times",
+          "description": "Most requests receive initial response within 3 business days"
+        },
+        "tip3": {
+          "title": "Contact Department Directly",
+          "description": "For urgent matters, contact the relevant department directly"
+        },
+        "tip4": {
+          "title": "Follow Up Regularly",
+          "description": "Check your dashboard weekly for updates on pending requests"
+        }
+      },
+      "footer": {
+        "needHelp": "Need assistance with government services?",
+        "contactSupport": "Contact Citizen Support",
+        "govName": "National Government Services",
+        "rightsReserved": "All rights reserved."
+      }
+    }
+  }
+
+
+,
+  "footer": {
+    "description": "TrustLine provides secure and reliable verification services to build trust in online transactions and interactions.",
+    "quickLinks": "Quick Links",
+    "home": "Home",
+    "about": "About Us",
+    "howItWorks": "How It Works",
+    "awareness": "Awareness",
+    "testimonials": "Testimonials",
+    "support": "Support",
+    "faq": "FAQ",
+    "contact": "Contact Us",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "sitemap": "Sitemap",
+    "rights": "All rights reserved.",
+    "secure": "Secure & Verified",
+    "encrypted": "Encrypted Data",
+    "contactUs": "Contact Us",
+    "helpLine": "24/7 Help Line",
+    "available247": "Available 24/7",
+    "newsletter": "Stay Updated",
+    "newsletterDesc": "Subscribe to our newsletter for the latest updates and security tips.",
+    "emailPlaceholder": "Your email address",
+    "subscribe": "Subscribe",
+    "paymentMethods": "Accepted Payment Methods"
+  }
+
+}
+
+
+ 
