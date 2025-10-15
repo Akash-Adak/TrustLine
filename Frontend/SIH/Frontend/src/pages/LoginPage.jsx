@@ -33,6 +33,7 @@ const GoogleIcon = () => (
 
 export default function LoginPage({ isOpen, onClose }) {
   const navigate = useNavigate();
+  const baseUrl = import.meta.env.VITE_API_URL;
   const [isLogin, setIsLogin] = useState(true);
   const [showOtp, setShowOtp] = useState(false);
   const [error, setError] = useState("");
@@ -175,7 +176,7 @@ export default function LoginPage({ isOpen, onClose }) {
 
   // --- Google login ---
   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:9095/oauth2/authorization/google";
+    window.location.href = `http://${baseUrl}/oauth2/authorization/google`;
   };
 
   // === UI forms ===
