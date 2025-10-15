@@ -696,7 +696,7 @@ export default function Navbar() {
             >
               {t("nav.login")}
             </button>
-                <Link to="/register" className="bg-yellow-400 hover:bg-yellow-300 text-blue-900 px-6 py-2 rounded-lg font-bold shadow-lg transition-all duration-200">
+                <Link to="/login" className="bg-yellow-400 hover:bg-yellow-300 text-blue-900 px-6 py-2 rounded-lg font-bold shadow-lg transition-all duration-200">
                   {t("nav.signUp")}
                 </Link>
               </div>
@@ -777,7 +777,7 @@ export default function Navbar() {
                   {t("nav.login")}
                 </Link>
                 <Link 
-                  to="/register" 
+                  to="/login" 
                   className="block py-3 text-center bg-yellow-400 text-blue-900 rounded-lg font-bold hover:bg-yellow-300 transition-colors" 
                   onClick={mobileMenu.close}
                 >
