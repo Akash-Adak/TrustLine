@@ -1,0 +1,106 @@
+name: Full Stack Auto PR + Build + Auto Merge
+
+on:
+  push:
+    branches:
+      - "feature/*"   # Trigger on feature branches
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  # Step 1: Create or update Pull Request
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create or update Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref_name }}
+          base: main
+          title: "🚀 Auto PR from ${{ github.ref_name }}"
+          body: |
+            Automated Pull Request created when pushing to `${{ github.ref_name }}`.
+            This PR will be auto-merged once all build and test checks pass successfully.
+          reviewers: Akash-Adak
+          labels: |
+            auto-merge
+            fullstack
+            feature
+
+  # Step 2: Frontend (React + Yarn)
+  frontend:
+    runs-on: ubuntu-latest
+    needs: create-pr
+    defaults:
+      run:
+        working-directory: frontend/SIH/Frontend   # ✅ change this if your React app folder has a different name
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run Lint
+        run: yarn lint --if-present
+
+      - name: Run Build
+        run: yarn build
+
+      - name: Run Tests
+        run: yarn test --if-present
+
+  # Step 3: Backend (Spring Boot + Maven)
+  backend:
+    runs-on: ubuntu-latest
+    needs: create-pr
+    defaults:
+      run:
+        working-directory: backend/SIH   # ✅ change this if your Spring Boot app folder has a different name
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Build with Maven
+        run: mvn clean install -DskipTests=false
+
+      - name: Run Tests
+        run: mvn test
+
+  # Step 4: Auto Merge when all checks pass
+  auto-merge:
+    runs-on: ubuntu-latest
+    needs: [frontend, backend]
+    steps:
+      - name: Auto merge pull request
+        uses: pascalgn/automerge-action@v0.15.6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MERGE_METHOD: squash
+          MERGE_LABELS: auto-merge
+          MERGE_COMMIT_MESSAGE: "🎉 Auto merged from ${{ github.ref_name }} after successful frontend & backend checks"
