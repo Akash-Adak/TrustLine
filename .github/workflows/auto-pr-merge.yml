@@ -42,7 +42,7 @@ jobs:
     needs: create-pr
     defaults:
       run:
-        working-directory: Frontned/SIH/Frontend
+        working-directory: Frontend/SIH/Frontend
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
