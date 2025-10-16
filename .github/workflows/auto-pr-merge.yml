@@ -3,7 +3,7 @@ name: Full Stack Auto PR + Build + Auto Merge
 on:
   push:
     branches:
-      - "feature/*"   # Trigger on feature branches
+      - "feature/*"   # triggers for any feature branch
 
 permissions:
   contents: write
@@ -17,16 +17,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Get default branch dynamically
+        id: default-branch
+        run: |
+          echo "DEFAULT_BRANCH=$(git remote show origin | grep 'HEAD branch' | cut -d' ' -f5)" >> $GITHUB_ENV
+
       - name: Create or update Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref_name }}
-          base: master
+          base: ${{ env.DEFAULT_BRANCH }}
           title: "🚀 Auto PR from ${{ github.ref_name }}"
-          body: |
-            Automated Pull Request created when pushing to `${{ github.ref_name }}`.
-            This PR will be auto-merged once all build and test checks pass successfully.
+          body: "Automated PR from `${{ github.ref_name }}`. Will auto-merge if all checks pass."
           reviewers: Akash-Adak
           labels: |
             auto-merge
@@ -39,7 +42,7 @@ jobs:
     needs: create-pr
     defaults:
       run:
-        working-directory: frontend/SIH/Frontend   # ✅ change this if your React app folder has a different name
+        working-directory: Frontned/SIH/Frontend
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -55,7 +58,7 @@ jobs:
       - name: Run Lint
         run: yarn lint --if-present
 
-      - name: Run Build
+      - name: Build
         run: yarn build
 
       - name: Run Tests
@@ -67,12 +70,12 @@ jobs:
     needs: create-pr
     defaults:
       run:
-        working-directory: backend/SIH   # ✅ change this if your Spring Boot app folder has a different name
+        working-directory: Backend/SIH
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Setup JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
@@ -92,7 +95,7 @@ jobs:
       - name: Run Tests
         run: mvn test
 
-  # Step 4: Auto Merge when all checks pass
+  # Step 4: Auto Merge
   auto-merge:
     runs-on: ubuntu-latest
     needs: [frontend, backend]
