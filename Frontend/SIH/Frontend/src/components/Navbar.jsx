@@ -25,12 +25,6 @@ const ChevronDownIcon = React.memo(({ className = "h-4 w-4" }) => (
   </svg>
 ));
 
-const GovernmentShieldIcon = React.memo(() => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="#1e40af" strokeWidth={1.5}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-  </svg>
-));
-
 const EmergencyIcon = React.memo(() => (
   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
@@ -40,12 +34,12 @@ const EmergencyIcon = React.memo(() => (
 // Enhanced Language Flags with colorful backgrounds
 const LanguageFlag = React.memo(({ language, showName = false }) => {
   const flagMap = useMemo(() => ({
-    en: { flag: "🇺🇸", name: "English", color: "from-blue-500 to-red-500", bg: "bg-gradient-to-r from-blue-100 to-red-100" },
-    hi: { flag: "🇮🇳", name: "हिंदी", color: "from-orange-500 to-green-500", bg: "bg-gradient-to-r from-orange-100 to-green-100" },
-    bn: { flag: "🇧🇩", name: "বাংলা", color: "from-green-600 to-red-600", bg: "bg-gradient-to-r from-green-100 to-red-100" }
+    en: { flag: "🇺🇸", name: "English", bg: "bg-gradient-to-r from-blue-100 to-red-100" },
+    hi: { flag: "🇮🇳", name: "हिंदी", bg: "bg-gradient-to-r from-orange-100 to-green-100" },
+    bn: { flag: "🇧🇩", name: "বাংলা", bg: "bg-gradient-to-r from-green-100 to-red-100" }
   }), []);
 
-  const current = flagMap[language] || { flag: "🌐", name: "English", color: "from-gray-500 to-blue-500", bg: "bg-gray-100" };
+  const current = flagMap[language] || { flag: "🌐", name: "English", bg: "bg-gray-100" };
 
   return (
     <div className={`flex items-center space-x-2 ${showName ? 'px-3 py-2 rounded-lg' : ''} ${current.bg}`}>
@@ -93,8 +87,7 @@ const useDropdown = (initialState = false) => {
   const [isOpen, setIsOpen] = useState(initialState);
   const ref = useRef(null);
 
-  const toggle = useCallback((e) => {
-    e?.stopPropagation?.();
+  const toggle = useCallback(() => {
     setIsOpen(prev => !prev);
   }, []);
 
@@ -118,25 +111,6 @@ const useDropdown = (initialState = false) => {
 
   return { isOpen, toggle, open, close, ref };
 };
-
-// Quick Action Button Component
-const QuickActionButton = React.memo(({ icon, label, onClick, variant = "primary" }) => {
-  const variants = {
-    primary: "bg-blue-600 hover:bg-blue-700 text-white",
-    secondary: "bg-gray-100 hover:bg-gray-200 text-gray-800",
-    emergency: "bg-red-600 hover:bg-red-700 text-white animate-pulse"
-  };
-
-  return (
-    <button
-      onClick={onClick}
-      className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 shadow-sm ${variants[variant]}`}
-    >
-      {icon}
-      <span className="text-sm">{label}</span>
-    </button>
-  );
-});
 
 export default function Navbar() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -243,7 +217,7 @@ export default function Navbar() {
   // Close mobile menu on route change
   useEffect(() => {
     mobileMenu.close();
-  }, [location, mobileMenu]);
+  }, [location.pathname]);
 
   const handleLogout = useCallback(async () => {
     try {
@@ -316,8 +290,16 @@ export default function Navbar() {
     quickActionsDropdown.close();
   }, [handleEmergency, navigate, quickActionsDropdown]);
 
-  // Enhanced navigation items configuration
+  // Enhanced navigation items configuration - Only for logged in users
   const desktopMenuItems = useMemo(() => {
+    if (!token) {
+      return [
+        { to: "/awareness", label: t("nav.awarenessHub"), icon: "📚" },
+        { to: "/services", label: t("nav.govServices"), icon: "🏛️" },
+        { to: "/schemes", label: t("nav.govSchemes"), icon: "💼" }
+      ];
+    }
+
     const baseItems = [
       { to: "/awareness", label: t("nav.awarenessHub"), icon: "📚" },
       { to: "/services", label: t("nav.govServices"), icon: "🏛️" },
@@ -333,9 +315,19 @@ export default function Navbar() {
     }
 
     return baseItems;
-  }, [isAdmin, dashboardPath, t]);
+  }, [token, isAdmin, dashboardPath, t]);
 
+  // Mobile menu items - Only show user-specific items when logged in
   const mobileMenuItems = useMemo(() => {
+    if (!token) {
+      return [
+        { to: "/awareness", label: t("nav.awarenessHub"), icon: "📚" },
+        { to: "/services", label: t("nav.govServices"), icon: "🏛️" },
+        { to: "/schemes", label: t("nav.govSchemes"), icon: "💼" },
+        { to: "/help", label: t("nav.helpSupport"), icon: "❓" }
+      ];
+    }
+
     const items = [
       { to: dashboardPath, label: t("nav.dashboard"), icon: "📊" },
       { to: "/awareness", label: t("nav.awarenessHub"), icon: "📚" },
@@ -357,7 +349,7 @@ export default function Navbar() {
     );
 
     return items;
-  }, [isAdmin, dashboardPath, t]);
+  }, [token, isAdmin, dashboardPath, t]);
 
   const quickActions = useMemo(() => [
     { 
@@ -415,7 +407,7 @@ export default function Navbar() {
       <div className="bg-red-600 text-white py-1 px-4 text-xs text-center">
         <div className="container mx-auto flex justify-between items-center">
           <span>🔔 {t("nav.govAlert")} - {t("nav.emergencyHelpline")}: <strong>112</strong></span>
-          <span>{currentTime.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+          <span className="hidden sm:inline">{currentTime.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
         </div>
       </div>
 
@@ -432,7 +424,7 @@ export default function Navbar() {
             </div>
             <div className="flex flex-col">
               <span className="text-2xl font-bold text-white tracking-wide">TrustLine</span>
-              <span className="text-yellow-300 text-xs font-medium">Government of India Initiative</span>
+              <span className="text-yellow-300 text-xs font-medium hidden sm:inline">Government of India Initiative</span>
             </div>
           </Link>
 
@@ -456,35 +448,35 @@ export default function Navbar() {
 
           {/* Enhanced Right Side Controls */}
           <div className="flex items-center space-x-3">
-            {/* Quick Actions Dropdown */}
+            {/* Quick Actions Dropdown - Only for logged in users */}
             {token && !isAdmin && (
-              <div className="relative" ref={quickActionsDropdown.ref}>
+              <div className="relative hidden md:block" ref={quickActionsDropdown.ref}>
                 <button 
                   onClick={quickActionsDropdown.toggle}
                   className="bg-yellow-400 hover:bg-yellow-300 text-blue-900 px-4 py-2 rounded-lg font-bold shadow-lg transition-all duration-200 flex items-center space-x-2"
                 >
                   <span>⚡</span>
-                  <span className="hidden sm:inline">{t("nav.quickActions")}</span>
+                  <span className="hidden lg:inline">{t("nav.quickActions")}</span>
                   <ChevronDownIcon className="h-3 w-3" />
                 </button>
                 
                 {quickActionsDropdown.isOpen && (
-                  <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-2xl z-50 border-2 border-yellow-400">
-                    <div className="p-4 border-b bg-gradient-to-r from-blue-50 to-indigo-50 rounded-t-xl">
+                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl z-50 border-2 border-yellow-400">
+                    <div className="p-3 border-b bg-gradient-to-r from-blue-50 to-indigo-50 rounded-t-xl">
                       <h3 className="font-bold text-blue-900 text-sm">{t("nav.quickActions")}</h3>
                     </div>
-                    <div className="p-2 space-y-2">
+                    <div className="p-2 space-y-1">
                       {quickActions.filter(action => action.available).map((action) => (
                         <button
                           key={action.action}
                           onClick={() => handleQuickAction(action.action)}
-                          className={`flex items-center space-x-3 w-full px-3 py-3 rounded-lg text-left transition-all duration-200 ${
+                          className={`flex items-center space-x-3 w-full px-3 py-2 rounded-lg text-left transition-all duration-200 ${
                             action.variant === 'emergency' 
-                              ? 'bg-red-50 hover:bg-red-100 border-l-4 border-red-500 animate-pulse' 
+                              ? 'bg-red-50 hover:bg-red-100 border-l-4 border-red-500' 
                               : 'hover:bg-blue-50 border-l-4 border-blue-500'
                           }`}
                         >
-                          <span className="text-xl">{action.icon}</span>
+                          <span className="text-lg">{action.icon}</span>
                           <span className="font-medium text-sm">{action.label}</span>
                         </button>
                       ))}
@@ -495,7 +487,7 @@ export default function Navbar() {
             )}
 
             {/* Compact Language Switcher */}
-            <div className="relative" ref={languageDropdown.ref}>
+            <div className="relative hidden md:block" ref={languageDropdown.ref}>
               <button 
                 onClick={languageDropdown.toggle}
                 className="flex items-center space-x-1 px-2 py-1.5 rounded-md bg-gradient-to-r from-blue-800 to-purple-800 hover:from-blue-500 hover:to-purple-500 transition-all duration-200 shadow-sm border border-blue-500/30"
@@ -532,9 +524,9 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* Enhanced Notifications */}
+            {/* Enhanced Notifications - Only for logged in users */}
             {token && (
-              <div className="relative" ref={notificationsDropdown.ref}>
+              <div className="relative hidden md:block" ref={notificationsDropdown.ref}>
                 <button 
                   onClick={notificationsDropdown.toggle}
                   className="relative p-2 text-white hover:text-yellow-300 rounded-full hover:bg-blue-800 transition-all duration-200 border border-blue-700"
@@ -542,16 +534,16 @@ export default function Navbar() {
                 >
                   <BellIcon />
                   {unreadCount > 0 && (
-                    <span className="absolute top-0 right-0 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white transform translate-x-1 -translate-y-1 shadow-lg animate-bounce">
+                    <span className="absolute top-0 right-0 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white transform translate-x-1 -translate-y-1 shadow-lg">
                       {unreadCount > 9 ? '9+' : unreadCount}
                     </span>
                   )}
                 </button>
 
                 {notificationsDropdown.isOpen && (
-                  <div className="absolute right-0 mt-2 w-96 bg-white rounded-xl shadow-2xl z-30 border-2 border-yellow-400">
-                    <div className="p-4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-t-xl flex justify-between items-center">
-                      <h3 className="font-bold text-white">{t("nav.notifications")}</h3>
+                  <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-2xl z-30 border-2 border-yellow-400">
+                    <div className="p-3 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-t-xl flex justify-between items-center">
+                      <h3 className="font-bold text-white text-sm">{t("nav.notifications")}</h3>
                       {notifications.length > 0 && (
                         <button 
                           onClick={markAllAsRead} 
@@ -561,36 +553,35 @@ export default function Navbar() {
                         </button>
                       )}
                     </div>
-                    <div className="max-h-96 overflow-y-auto">
+                    <div className="max-h-80 overflow-y-auto">
                       {notifications.length > 0 ? (
                         notifications.map(n => (
                           <div 
                             key={n.id} 
                             onClick={() => handleNotificationClick(n)} 
-                            className={`p-4 border-b cursor-pointer transition-all duration-200 ${
+                            className={`p-3 border-b cursor-pointer transition-all duration-200 ${
                               !n.read 
                                 ? "bg-blue-50 hover:bg-blue-100 border-l-4 border-blue-600" 
                                 : "hover:bg-gray-50 border-l-4 border-gray-300"
                             }`}
                           >
-                            <div className="flex items-start space-x-3">
+                            <div className="flex items-start space-x-2">
                               <div className={`w-2 h-2 rounded-full mt-2 ${!n.read ? 'bg-blue-600' : 'bg-gray-400'}`}></div>
                               <div className="flex-1">
-                                <p className={`text-sm ${!n.read ? "font-bold text-gray-900" : "text-gray-700"}`}>
+                                <p className={`text-xs ${!n.read ? "font-bold text-gray-900" : "text-gray-700"}`}>
                                   {n.message}
                                 </p>
-                                <p className="text-xs text-gray-500 mt-1 flex items-center space-x-2">
-                                  <span>🕒</span>
-                                  <span>{new Date(n.date).toLocaleString()}</span>
+                                <p className="text-xs text-gray-500 mt-1">
+                                  {new Date(n.date).toLocaleString()}
                                 </p>
                               </div>
                             </div>
                           </div>
                         ))
                       ) : (
-                        <div className="p-8 text-center">
-                          <div className="text-4xl mb-2">📭</div>
-                          <p className="text-gray-500 font-medium">{t("nav.noNotifications")}</p>
+                        <div className="p-6 text-center">
+                          <div className="text-3xl mb-2">📭</div>
+                          <p className="text-gray-500 text-sm">{t("nav.noNotifications")}</p>
                         </div>
                       )}
                     </div>
@@ -599,12 +590,12 @@ export default function Navbar() {
               </div>
             )}
 
-            {/* Enhanced User Menu */}
+            {/* Enhanced User Menu - Only for logged in users */}
             {token ? (
-              <div className="relative" ref={userDropdown.ref}>
+              <div className="relative hidden md:block" ref={userDropdown.ref}>
                 <button 
                   onClick={userDropdown.toggle}
-                  className="flex items-center space-x-3 text-white hover:text-yellow-300 rounded-xl p-2 hover:bg-blue-800 transition-all duration-200 border border-blue-700"
+                  className="flex items-center space-x-2 text-white hover:text-yellow-300 rounded-xl p-2 hover:bg-blue-800 transition-all duration-200 border border-blue-700"
                   aria-label="User menu"
                 >
                   <UserAvatar user={user} size={10} showStatus={true} />
@@ -620,11 +611,11 @@ export default function Navbar() {
                 </button>
 
                 {userDropdown.isOpen && (
-                  <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-2xl z-40 border-2 border-yellow-400 overflow-hidden">
+                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl z-40 border-2 border-yellow-400 overflow-hidden">
                     {/* User Header */}
-                    <div className="p-4 bg-gradient-to-r from-blue-600 to-indigo-600">
-                      <div className="flex items-center space-x-3">
-                        <UserAvatar user={user} size={12} />
+                    <div className="p-3 bg-gradient-to-r from-blue-600 to-indigo-600">
+                      <div className="flex items-center space-x-2">
+                        <UserAvatar user={user} size={10} />
                         <div className="flex-1 min-w-0">
                           <p className="font-bold text-white text-sm truncate">
                             {user?.name || 'User'}
@@ -632,10 +623,6 @@ export default function Navbar() {
                           <p className="text-blue-200 text-xs truncate">
                             {user?.email || ''}
                           </p>
-                          <div className="flex items-center space-x-1 mt-1">
-                            <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                            <span className="text-yellow-300 text-xs">Online</span>
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -644,7 +631,7 @@ export default function Navbar() {
                     <div className="p-2">
                       <Link 
                         to="/profile" 
-                        className="flex items-center space-x-3 px-3 py-3 text-sm text-gray-700 hover:bg-blue-50 rounded-lg transition-all duration-200" 
+                        className="flex items-center space-x-3 px-3 py-2 text-sm text-gray-700 hover:bg-blue-50 rounded-lg transition-all duration-200" 
                         onClick={userDropdown.close}
                       >
                         <span className="text-lg">👤</span>
@@ -652,16 +639,17 @@ export default function Navbar() {
                       </Link>
                       <Link 
                         to={dashboardPath} 
-                        className="flex items-center space-x-3 px-3 py-3 text-sm text-gray-700 hover:bg-blue-50 rounded-lg transition-all duration-200" 
+                        className="flex items-center space-x-3 px-3 py-2 text-sm text-gray-700 hover:bg-blue-50 rounded-lg transition-all duration-200" 
                         onClick={userDropdown.close}
                       >
+                        <span className="text-lg">📊</span>
                         <span className="text-lg">📊</span>
                         <span>{t("nav.dashboard")}</span>
                       </Link>
                       {!isAdmin && (
                         <Link 
                           to="/myreport" 
-                          className="flex items-center space-x-3 px-3 py-3 text-sm text-gray-700 hover:bg-blue-50 rounded-lg transition-all duration-200" 
+                          className="flex items-center space-x-3 px-3 py-2 text-sm text-gray-700 hover:bg-blue-50 rounded-lg transition-all duration-200" 
                           onClick={userDropdown.close}
                         >
                           <span className="text-lg">📋</span>
@@ -670,7 +658,7 @@ export default function Navbar() {
                       )}
                       <Link 
                         to="/settings" 
-                        className="flex items-center space-x-3 px-3 py-3 text-sm text-gray-700 hover:bg-blue-50 rounded-lg transition-all duration-200" 
+                        className="flex items-center space-x-3 px-3 py-2 text-sm text-gray-700 hover:bg-blue-50 rounded-lg transition-all duration-200" 
                         onClick={userDropdown.close}
                       >
                         <span className="text-lg">⚙️</span>
@@ -682,7 +670,7 @@ export default function Navbar() {
                       <button 
                         onClick={handleLogout} 
                         disabled={isLoading} 
-                        className="flex items-center space-x-3 w-full text-left px-3 py-3 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 disabled:opacity-50"
+                        className="flex items-center space-x-3 w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 disabled:opacity-50"
                       >
                         <span className="text-lg">🚪</span>
                         <span>{isLoading ? t("loggingOut") : t("logout")}</span>
@@ -695,25 +683,23 @@ export default function Navbar() {
               <div className="hidden md:flex items-center space-x-3">
                 <button 
                   onClick={() => setIsLoginModalOpen(true)}
-                  className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-200"
+                  className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition duration-200 text-sm font-medium"
                 >
                   {t("nav.login")}
                 </button>
-                <Link to="/login" className="bg-yellow-400 hover:bg-yellow-300 text-blue-900 px-6 py-2 rounded-lg font-bold shadow-lg transition-all duration-200">
+                <Link to="/login" className="bg-yellow-400 hover:bg-yellow-300 text-blue-900 px-5 py-2 rounded-lg font-bold shadow-lg transition-all duration-200 text-sm">
                   {t("nav.signUp")}
                 </Link>
               </div>
             )}
 
-            {/* Enhanced Mobile Hamburger - Fixed click handler */}
+            {/* Enhanced Mobile Hamburger */}
             <div className="lg:hidden">
               <button 
-                onClick={(e) => {
-                  e.stopPropagation();
-                  mobileMenu.toggle();
-                }}
+                onClick={mobileMenu.toggle}
                 className="p-2 text-white hover:text-yellow-300 rounded-lg hover:bg-blue-800 transition-all duration-200 border border-blue-700" 
-                aria-label="Menu"
+                aria-label="Toggle menu"
+                type="button"
               >
                 <HamburgerIcon open={mobileMenu.isOpen} />
               </button>
@@ -721,86 +707,115 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Enhanced Mobile Menu */}
+        {/* Enhanced Mobile Menu - Compact */}
         {mobileMenu.isOpen && (
-          <div className="lg:hidden border-t border-blue-700 bg-blue-800 px-4 py-4 space-y-2 animate-slideDown">
-            {/* User Info in Mobile */}
+          <div className="lg:hidden border-t border-blue-700 bg-blue-800 py-3">
+            {/* User Info in Mobile - Only if logged in */}
             {token && (
-              <div className="p-3 bg-blue-700 rounded-lg mb-2">
-                <div className="flex items-center space-x-3">
-                  <UserAvatar user={user} size={12} />
-                  <div>
-                    <p className="font-bold text-white">{user?.name || 'User'}</p>
-                    <p className="text-blue-200 text-sm">{user?.email || ''}</p>
+              <div className="px-4 pb-3 mb-2 border-b border-blue-700">
+                <div className="flex items-center space-x-3 bg-blue-700 rounded-lg p-3">
+                  <UserAvatar user={user} size={10} />
+                  <div className="flex-1 min-w-0">
+                    <p className="font-bold text-white text-sm truncate">{user?.name || 'User'}</p>
+                    <p className="text-blue-200 text-xs truncate">{user?.email || ''}</p>
                   </div>
                 </div>
               </div>
             )}
 
             {/* Mobile Menu Items */}
-            {mobileMenuItems.map((item) => (
-              <Link
-                key={item.to}
-                to={item.to}
-                className="flex items-center space-x-3 py-3 px-4 text-white hover:bg-blue-700 rounded-lg transition-all duration-200"
-                onClick={() => mobileMenu.close()}
-              >
-                <span className="text-xl">{item.icon}</span>
-                <span className="font-medium">{item.label}</span>
-              </Link>
-            ))}
+            <div className="px-4 space-y-1">
+              {mobileMenuItems.map((item) => (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className="flex items-center space-x-3 py-2 px-3 text-white hover:bg-blue-700 rounded-lg transition-all duration-200 text-sm"
+                  onClick={mobileMenu.close}
+                >
+                  <span className="text-lg">{item.icon}</span>
+                  <span className="font-medium">{item.label}</span>
+                </Link>
+              ))}
+            </div>
 
-            {/* Quick Actions in Mobile */}
+            {/* Quick Actions in Mobile - Only for logged in non-admin users */}
             {token && !isAdmin && (
-              <div className="border-t border-blue-700 pt-3 mt-2">
+              <div className="px-4 border-t border-blue-700 pt-3 mt-3">
+                <p className="text-blue-300 text-xs font-semibold mb-2 px-2">Quick Actions</p>
                 <div className="grid grid-cols-2 gap-2">
-                  {quickActions.filter(action => action.available).map((action) => (
+                  {quickActions.filter(action => action.available).slice(0, 4).map((action) => (
                     <button
                       key={action.action}
                       onClick={() => {
                         handleQuickAction(action.action);
                         mobileMenu.close();
                       }}
-                      className={`flex items-center justify-center space-x-2 py-2 rounded-lg text-sm font-medium ${
+                      className={`flex flex-col items-center justify-center py-2 rounded-lg text-xs font-medium transition-all duration-200 ${
                         action.variant === 'emergency' 
                           ? 'bg-red-600 hover:bg-red-500 text-white' 
                           : 'bg-blue-700 hover:bg-blue-600 text-white'
                       }`}
                     >
-                      <span>{action.icon}</span>
-                      <span className="text-xs">{action.label}</span>
+                      <span className="text-lg mb-1">{action.icon}</span>
+                      <span className="text-xs leading-tight text-center">{action.label}</span>
                     </button>
                   ))}
                 </div>
               </div>
             )}
 
+            {/* Language Selector in Mobile */}
+            <div className="px-4 border-t border-blue-700 pt-3 mt-3">
+              <p className="text-blue-300 text-xs font-semibold mb-2 px-2">Language</p>
+              <div className="grid grid-cols-3 gap-2">
+                {["en", "hi", "bn"].map(lng => (
+                  <button 
+                    key={lng} 
+                    onClick={() => {
+                      changeLanguage(lng);
+                      mobileMenu.close();
+                    }}
+                    className={`flex items-center justify-center py-2 rounded-lg text-xs transition-all duration-200 ${
+                      i18n.language === lng 
+                        ? 'bg-white text-blue-900 font-bold' 
+                        : 'bg-blue-700 hover:bg-blue-600 text-white'
+                    }`}
+                  >
+                    <LanguageFlag language={lng} showName={false} />
+                  </button>
+                ))}
+              </div>
+            </div>
+
             {/* Auth Buttons in Mobile */}
             {!token ? (
-              <div className="border-t border-blue-700 pt-3 mt-2 space-y-2">
+              <div className="px-4 border-t border-blue-700 pt-3 mt-3 space-y-2">
                 <button 
                   onClick={() => {
                     setIsLoginModalOpen(true);
                     mobileMenu.close();
                   }}
-                  className="block w-full py-3 text-center text-white hover:bg-blue-700 rounded-lg transition-colors" 
+                  className="block w-full py-2.5 text-center text-white bg-blue-700 hover:bg-blue-600 rounded-lg transition-all duration-200 font-medium text-sm" 
                 >
                   {t("nav.login")}
                 </button>
                 <Link 
                   to="/login" 
-                  className="block py-3 text-center bg-yellow-400 text-blue-900 rounded-lg font-bold hover:bg-yellow-300 transition-colors" 
+                  className="block py-2.5 text-center bg-yellow-400 text-blue-900 rounded-lg font-bold hover:bg-yellow-300 transition-all duration-200 text-sm" 
                   onClick={mobileMenu.close}
                 >
                   {t("nav.signUp")}
                 </Link>
               </div>
             ) : (
-              <div className="border-t border-blue-700 pt-3 mt-2">
+              <div className="px-4 border-t border-blue-700 pt-3 mt-3">
                 <button 
-                  onClick={handleLogout} 
+                  onClick={() => {
+                    handleLogout();
+                    mobileMenu.close();
+                  }}
                   disabled={isLoading} 
-                  className="flex items-center space-x-3 w-full text-left py-3 px-4 text-red-300 hover:bg-red-900 rounded-lg disabled:opacity-50"
+                  className="flex items-center justify-center space-x-2 w-full py-2.5 px-4 text-red-300 bg-red-900 hover:bg-red-800 rounded-lg transition-all duration-200 disabled:opacity-50 font-medium text-sm"
                 >
                   <span>🚪</span>
                   <span>{isLoading ? t("loggingOut") : t("logout")}</span>
@@ -811,10 +826,13 @@ export default function Navbar() {
         )}
       </div>
 
-      <LoginPage 
-        isOpen={isLoginModalOpen} 
-        onClose={() => setIsLoginModalOpen(false)} 
-      />
+      {/* Login Modal */}
+      {isLoginModalOpen && (
+        <LoginPage 
+          isOpen={isLoginModalOpen} 
+          onClose={() => setIsLoginModalOpen(false)} 
+        />
+      )}
     </nav>
   );
 }
