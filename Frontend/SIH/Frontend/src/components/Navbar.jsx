@@ -5,6 +5,7 @@ import { logoutUser, getUserProfile } from "../services/api";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import LoginPage from '../pages/LoginPage.jsx';
+
 // Enhanced Icons with Government Style
 const BellIcon = React.memo(() => (
   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -87,12 +88,16 @@ const UserAvatar = React.memo(({ user, size = 10, showStatus = false }) => {
   );
 });
 
-// Custom hook for dropdown management
+// Fixed Custom hook for dropdown management
 const useDropdown = (initialState = false) => {
   const [isOpen, setIsOpen] = useState(initialState);
   const ref = useRef(null);
 
-  const toggle = useCallback(() => setIsOpen(prev => !prev), []);
+  const toggle = useCallback((e) => {
+    e?.stopPropagation?.();
+    setIsOpen(prev => !prev);
+  }, []);
+
   const open = useCallback(() => setIsOpen(true), []);
   const close = useCallback(() => setIsOpen(false), []);
 
@@ -134,7 +139,7 @@ const QuickActionButton = React.memo(({ icon, label, onClick, variant = "primary
 });
 
 export default function Navbar() {
-    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
@@ -172,7 +177,6 @@ export default function Navbar() {
   );
 
   const isAdmin = useMemo(() => user?.role === "ROLE_ADMIN", [user?.role]);
-  // const isCitizen = useMemo(() => user?.role === "ROLE_CITIZEN", [user?.role]);
 
   // Fetch user profile
   useEffect(() => {
@@ -420,12 +424,11 @@ export default function Navbar() {
           {/* Enhanced Logo with Government Identity */}
           <Link to="/" className="flex items-center space-x-3 flex-shrink-0 group">
             <div className="bg-white rounded-xl p-2 shadow-2xl border-4 border-yellow-400 transform group-hover:scale-105 transition-transform duration-200">
-              {/* <GovernmentShieldIcon /> */}
               <img 
-                  src="/logo2.png"
-                  alt="TrustLine Logo" 
-                  className="h-10 w-10 object-contain"
-                />
+                src="/logo2.png"
+                alt="TrustLine Logo" 
+                className="h-10 w-10 object-contain"
+              />
             </div>
             <div className="flex flex-col">
               <span className="text-2xl font-bold text-white tracking-wide">TrustLine</span>
@@ -491,43 +494,43 @@ export default function Navbar() {
               </div>
             )}
 
-      {/* Compact Language Switcher */}
-          <div className="relative" ref={languageDropdown.ref}>
-            <button 
-              onClick={languageDropdown.toggle}
-              className="flex items-center space-x-1 px-2 py-1.5 rounded-md bg-gradient-to-r from-blue-800 to-purple-800 hover:from-blue-500 hover:to-purple-500 transition-all duration-200 shadow-sm border border-blue-500/30"
-              aria-label="Change language"
-            >
-              <LanguageFlag language={i18n.language} className="w-4 h-4 bg-black" />
-              <ChevronDownIcon className="h-3 w-3 text-black" />
-            </button>
-            
-            {languageDropdown.isOpen && (
-              <div className="absolute right-0 mt-1 w-40 bg-white rounded-lg shadow-xl z-40 border border-gray-200 overflow-hidden">
-                <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-500">
-                  <h3 className="font-semibold text-white text-xs">{t("nav.selectLanguage")}</h3>
+            {/* Compact Language Switcher */}
+            <div className="relative" ref={languageDropdown.ref}>
+              <button 
+                onClick={languageDropdown.toggle}
+                className="flex items-center space-x-1 px-2 py-1.5 rounded-md bg-gradient-to-r from-blue-800 to-purple-800 hover:from-blue-500 hover:to-purple-500 transition-all duration-200 shadow-sm border border-blue-500/30"
+                aria-label="Change language"
+              >
+                <LanguageFlag language={i18n.language} />
+                <ChevronDownIcon className="h-3 w-3 text-white" />
+              </button>
+              
+              {languageDropdown.isOpen && (
+                <div className="absolute right-0 mt-1 w-40 bg-white rounded-lg shadow-xl z-40 border border-gray-200 overflow-hidden">
+                  <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-500">
+                    <h3 className="font-semibold text-white text-xs">{t("nav.selectLanguage")}</h3>
+                  </div>
+                  <div className="p-1">
+                    {["en", "hi", "bn"].map(lng => (
+                      <button 
+                        key={lng} 
+                        onClick={() => changeLanguage(lng)} 
+                        className={`flex items-center justify-between w-full px-2 py-1.5 rounded-md text-sm mb-0.5 transition-all duration-150 ${
+                          i18n.language === lng 
+                            ? 'bg-blue-50 text-blue-700 font-medium' 
+                            : 'hover:bg-gray-50 text-gray-700'
+                        }`}
+                      >
+                        <LanguageFlag language={lng} showName={true} />
+                        {i18n.language === lng && (
+                          <span className="text-green-500 text-sm">✓</span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-                <div className="p-1">
-                  {["en", "hi", "bn"].map(lng => (
-                    <button 
-                      key={lng} 
-                      onClick={() => changeLanguage(lng)} 
-                      className={`flex items-center justify-between w-full px-2 py-1.5 rounded-md text-sm mb-0.5 transition-all duration-150 ${
-                        i18n.language === lng 
-                          ? 'bg-blue-50 text-blue-700 font-medium' 
-                          : 'hover:bg-gray-50 text-gray-700'
-                      }`}
-                    >
-                      <LanguageFlag language={lng} showName={true} className="text-xs" />
-                      {i18n.language === lng && (
-                        <span className="text-green-500 text-sm">✓</span>
-                      )}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
 
             {/* Enhanced Notifications */}
             {token && (
@@ -691,21 +694,24 @@ export default function Navbar() {
             ) : (
               <div className="hidden md:flex items-center space-x-3">
                 <button 
-              onClick={() => setIsLoginModalOpen(true)}
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-200"
-            >
-              {t("nav.login")}
-            </button>
+                  onClick={() => setIsLoginModalOpen(true)}
+                  className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-200"
+                >
+                  {t("nav.login")}
+                </button>
                 <Link to="/login" className="bg-yellow-400 hover:bg-yellow-300 text-blue-900 px-6 py-2 rounded-lg font-bold shadow-lg transition-all duration-200">
                   {t("nav.signUp")}
                 </Link>
               </div>
             )}
 
-            {/* Enhanced Mobile Hamburger */}
+            {/* Enhanced Mobile Hamburger - Fixed click handler */}
             <div className="lg:hidden">
               <button 
-                onClick={mobileMenu.toggle}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  mobileMenu.toggle();
+                }}
                 className="p-2 text-white hover:text-yellow-300 rounded-lg hover:bg-blue-800 transition-all duration-200 border border-blue-700" 
                 aria-label="Menu"
               >
@@ -737,7 +743,7 @@ export default function Navbar() {
                 key={item.to}
                 to={item.to}
                 className="flex items-center space-x-3 py-3 px-4 text-white hover:bg-blue-700 rounded-lg transition-all duration-200"
-                onClick={mobileMenu.close}
+                onClick={() => mobileMenu.close()}
               >
                 <span className="text-xl">{item.icon}</span>
                 <span className="font-medium">{item.label}</span>
@@ -751,7 +757,10 @@ export default function Navbar() {
                   {quickActions.filter(action => action.available).map((action) => (
                     <button
                       key={action.action}
-                      onClick={() => handleQuickAction(action.action)}
+                      onClick={() => {
+                        handleQuickAction(action.action);
+                        mobileMenu.close();
+                      }}
                       className={`flex items-center justify-center space-x-2 py-2 rounded-lg text-sm font-medium ${
                         action.variant === 'emergency' 
                           ? 'bg-red-600 hover:bg-red-500 text-white' 
@@ -769,13 +778,15 @@ export default function Navbar() {
             {/* Auth Buttons in Mobile */}
             {!token ? (
               <div className="border-t border-blue-700 pt-3 mt-2 space-y-2">
-                <Link 
-                  to="/login" 
-                  className="block py-3 text-center text-white hover:bg-blue-700 rounded-lg transition-colors" 
-                  onClick={mobileMenu.close}
+                <button 
+                  onClick={() => {
+                    setIsLoginModalOpen(true);
+                    mobileMenu.close();
+                  }}
+                  className="block w-full py-3 text-center text-white hover:bg-blue-700 rounded-lg transition-colors" 
                 >
                   {t("nav.login")}
-                </Link>
+                </button>
                 <Link 
                   to="/login" 
                   className="block py-3 text-center bg-yellow-400 text-blue-900 rounded-lg font-bold hover:bg-yellow-300 transition-colors" 
@@ -800,7 +811,7 @@ export default function Navbar() {
         )}
       </div>
 
-       <LoginPage 
+      <LoginPage 
         isOpen={isLoginModalOpen} 
         onClose={() => setIsLoginModalOpen(false)} 
       />

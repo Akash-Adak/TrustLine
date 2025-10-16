@@ -44,5 +44,7 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/nominatim/, ""),
       },
     },
+    host:'0.0.0.0',
+    port:5173
   },
 })
