@@ -22,7 +22,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref_name }}
-          base: main
+          base: master
           title: "🚀 Auto PR from ${{ github.ref_name }}"
           body: |
             Automated Pull Request created when pushing to `${{ github.ref_name }}`.
