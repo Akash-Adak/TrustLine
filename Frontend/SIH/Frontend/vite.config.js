@@ -2,10 +2,11 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
-
+import EnvironmentPlugin from 'vite-plugin-environment';
 export default defineConfig({
   plugins: [
     react(),
+    EnvironmentPlugin('all') ,
     VitePWA({
       registerType: 'autoUpdate',
       injectRegister: 'auto',
@@ -46,5 +47,10 @@ export default defineConfig({
     },
     host:'0.0.0.0',
     port:5173
+  },
+    test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/setupTests.js',
   },
 })

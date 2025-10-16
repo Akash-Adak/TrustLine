@@ -17,6 +17,7 @@ import OAuth2Callback from './components/OAuth2Callback .jsx';
 import Footer from './pages/Footer.jsx';
 import GovernmentSchemaPage from './pages/GovernmentSchemaPage.jsx';
 import GovernmentServicesPage from './pages/GovernmentServicesPage.jsx';
+import { render, screen } from "@testing-library/react";
 
 function App() {
   return (
@@ -49,3 +50,4 @@ function App() {
 }
 
 export default App;
+
