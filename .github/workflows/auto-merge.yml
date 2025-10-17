@@ -9,6 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     if: contains(github.event.pull_request.labels.*.name, 'auto-merge')
     steps:
+
+      - name: Wait for PR to be ready
+        run: sleep 60  # Give GitHub time to register PR and label
+
+
       - uses: pascalgn/automerge-action@v0.15.6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
