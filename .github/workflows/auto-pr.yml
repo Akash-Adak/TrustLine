@@ -84,13 +84,15 @@ jobs:
     runs-on: ubuntu-latest
     needs: [create-pr, frontend, backend]
     steps:
-      - name: Wait for PR registration
-        run: sleep 20
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Wait for PR to be registered
+        run: sleep 30  # ensures GitHub knows about the PR
 
       - name: Enable Auto-Merge
         uses: peter-evans/enable-pull-request-automerge@v3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           pull-request-number: ${{ needs.create-pr.outputs.pr-number }}
           merge-method: merge
