@@ -812,13 +812,7 @@ export default function Navbar() {
                 >
                   {t("nav.signUp")}
                 </button>
-                {/* <Link 
-                  to="/login" 
-                  className="block py-2.5 text-center bg-yellow-400 text-blue-900 rounded-lg font-bold hover:bg-yellow-300 transition-all duration-200 text-sm" 
-                  onClick={mobileMenu.close}
-                >
-                  {t("nav.signUp")}
-                </Link> */}
+
               </div>
             ) : (
               <div className="px-4 border-t border-blue-700 pt-3 mt-3">
