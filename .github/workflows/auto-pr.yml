@@ -110,10 +110,10 @@ jobs:
         run: mvn test
 
   trigger-auto-merge:
-    needs: [test-build, security-scan]
-    if: github.event_name == 'pull_request' && always() && !contains(needs.*.conclusion, 'failure') && !contains(needs.*.conclusion, 'cancelled')
+    needs: [frontend, backend]
+    if: ${{ success() }}
     runs-on: ubuntu-latest
     steps:
-      - name: Auto Merge After Successful Build
 
-        run: echo "All checks passed - PR can be auto-merged"
+      - name: Auto-merge check
+        run: echo "✅ Build & tests passed — ready for auto merge trigger"
