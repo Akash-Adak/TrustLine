@@ -109,11 +109,15 @@ jobs:
 
   enable-auto-merge:
     runs-on: ubuntu-latest
-    needs: [frontend, backend]   # ✅ Only runs after builds pass
+    needs: [frontend, backend]
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Enable Auto-Merge
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           pull-request-number: ${{ needs.create-pr.outputs.pr-number }}
-          merge-method: merge       # ✅ Merge into master preserving commits
+          merge-method: merge
+  # ✅ Merge into master preserving commits
