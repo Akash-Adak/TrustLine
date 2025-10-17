@@ -1,0 +1,78 @@
+spring:
+  application:
+    name: SIH-backend-test
+
+  datasource:
+    # Use in-memory H2 for fast testing instead of MySQL
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+
+  flyway:
+    enabled: false  # Flyway migrations are usually skipped in tests
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/testdb  # Dummy/local MongoDB URI for tests
+
+    redis:
+      host: localhost
+      port: 6379
+      username:
+      password:
+      timeout: 60000
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: test-google-client-id
+            client-secret: test-google-client-secret
+            scope:
+              - email
+              - profile
+            redirect-uri: "http://localhost:9095/login/oauth2/code/google"
+            client-name: Google
+        provider:
+          google:
+            issuer-uri: https://accounts.google.com
+
+  mail:
+    host: smtp.testmail.com
+    port: 587
+    username: test@example.com
+    password: testpassword
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  kafka:
+    bootstrap-servers: localhost:9092  # Can be a dummy Kafka during tests
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+jwt:
+  secret: test-secret-key
+  expiration: 3600000  # 1 hour for testing
+
+app:
+  frontend-url: http://localhost:5173
+
+google:
+  api:
+    key: test-google-api-key
+
+server:
+  address: 0.0.0.0
+  port: 0  # Let Spring pick a random port for tests

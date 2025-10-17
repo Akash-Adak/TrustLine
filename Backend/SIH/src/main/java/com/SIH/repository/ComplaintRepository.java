@@ -21,7 +21,11 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
 
 
 
-    @Query("SELECT AVG(DATEDIFF(c.resolvedAt, c.createdAt)) FROM Complaint c WHERE c.resolvedAt IS NOT NULL")
+    @Query(
+            value = "SELECT AVG(DATEDIFF(resolved_at, created_at)) FROM complaint WHERE resolved_at IS NOT NULL",
+            nativeQuery = true
+    )
     Double findAverageResolutionTime();
+
 }
 
