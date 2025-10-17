@@ -115,5 +115,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: Auto-merge check
+      - name: Auto Merge After Successful Build
         run: echo "✅ Build & tests passed — ready for auto merge trigger"
