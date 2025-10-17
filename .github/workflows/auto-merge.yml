@@ -1,23 +1,105 @@
-name: Auto Merge After Successful Build
+name: Auto Merge Pull Request
 
 on:
-  pull_request_target:
-    types: [opened, labeled, synchronize]
+  pull_request:
+    types: [labeled, unlabeled, synchronize, opened, reopened, ready_for_review]
+  pull_request_review:
+    types: [submitted]
+  check_suite:
+    types: [completed]
+  status: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+env:
+  MERGE_METHOD: squash
+  AUTO_MERGE_LABEL: auto-merge
 
 jobs:
   auto-merge:
     runs-on: ubuntu-latest
-    if: contains(github.event.pull_request.labels.*.name, 'auto-merge')
+    if: >
+      github.event.pull_request.draft == false &&
+      (github.event.pull_request.base.ref == 'master' || github.event.pull_request.base.ref == 'develop')
+
     steps:
+      # 1️⃣ Check if PR is mergeable
+      - name: Check if PR is mergeable
+        id: check-mergeable
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pull_number = context.issue.number;
+            let { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number
+            });
+            
+            // Retry if mergeable is null
+            let retries = 3;
+            while (pr.mergeable === null && retries > 0) {
+              core.info('Waiting for GitHub to calculate mergeability...');
+              await new Promise(r => setTimeout(r, 5000));
+              const retry = await github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number
+              });
+              pr = retry.data;
+              retries--;
+            }
+            
+            if (pr.mergeable && pr.mergeable_state === 'clean') {
+              core.info('✅ PR is mergeable.');
+              return 'true';
+            } else {
+              core.warning(`⚠️ PR is not mergeable. State: ${pr.mergeable_state}`);
+              return 'false';
+            }
+          result-encoding: string
 
-      - name: Wait for PR to be ready
-        run: sleep 60  # Give GitHub time to register PR and label
+      # 2️⃣ Add auto-merge label if PR is clean
+      - name: Add auto-merge label
+        if: ${{ steps.check-mergeable.outputs.result == 'true' }}
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pull_number = context.issue.number;
+            core.info(`Adding label "${process.env.AUTO_MERGE_LABEL}"...`);
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pull_number,
+              labels: [process.env.AUTO_MERGE_LABEL]
+            });
 
-
-      - uses: pascalgn/automerge-action@v0.15.6
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MERGE_METHOD: squash
-          MERGE_LABELS: auto-merge
-          MERGE_COMMIT_MESSAGE: "🎉 Auto merged after successful build"
-
+      # 3️⃣ Merge PR using GitHub API
+      - name: Auto-merge Pull Request
+        if: ${{ steps.check-mergeable.outputs.result == 'true' }}
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pull_number = context.issue.number;
+            core.info(`Merging PR #${pull_number} using method "${process.env.MERGE_METHOD}"...`);
+            try {
+              await github.rest.pulls.merge({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number,
+                merge_method: process.env.MERGE_METHOD,
+                commit_title: `Auto-merged PR #${pull_number} - ${context.payload.pull_request.title}`,
+                commit_message: context.payload.pull_request.body || ""
+              });
+              core.info(`✅ PR #${pull_number} successfully merged.`);
+            } catch (error) {
+              core.warning(`⚠️ Failed to merge PR #${pull_number}: ${error.message}`);
+            
+            
+            }
