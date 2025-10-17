@@ -34,7 +34,7 @@ jobs:
           title: "🚀 Auto PR from ${{ github.ref_name }}"
           body: "Automated PR from `${{ github.ref_name }}`. Will auto-merge if all checks pass."
           reviewers: Akash-Adak
-          labels: auto-merge, fullstack, feature, success
+          labels: auto-merge, fullstack, feature
 
   # 2️⃣ Frontend Build & Test
   frontend:
@@ -48,10 +48,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - uses: actions/cache@v4
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
       - run: npm install --legacy-peer-deps
       - run: npm run build
       - uses: actions/upload-artifact@v4
@@ -72,27 +75,31 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - uses: actions/cache@v4
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
         with:
           path: ~/.m2
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
       - run: mvn clean install -DskipTests=false
       - run: mvn test
 
   # 4️⃣ Enable Auto-Merge
   enable-auto-merge:
     runs-on: ubuntu-latest
+    # This job runs only if the PR is created and both builds succeed
     needs: [create-pr, frontend, backend]
     steps:
+      # ✅ FIX: This step was missing.
+      # The 'gh' CLI (used by the action) needs the repository context to run.
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Wait for PR to be registered
-        run: sleep 30  # ensures GitHub knows about the PR
 
       - name: Enable Auto-Merge
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
+          # The GITHUB_TOKEN is required to authorize the action
           token: ${{ secrets.GITHUB_TOKEN }}
           pull-request-number: ${{ needs.create-pr.outputs.pr-number }}
           merge-method: merge
