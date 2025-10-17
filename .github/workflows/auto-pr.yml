@@ -35,6 +35,7 @@ jobs:
             auto-merge
             fullstack
             feature
+            success
 
   # Step 2: Frontend (React + npm)
 # Step 2: Frontend (React + npm)
