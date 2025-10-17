@@ -27,14 +27,17 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref_name }}
-          base: main                # or your default branch
+          base: ${{ env.DEFAULT_BRANCH }}
           title: "🚀 Auto PR from ${{ github.ref_name }}"
           body: "Automated PR from `${{ github.ref_name }}`. Will auto-merge if all checks pass."
           reviewers: Akash-Adak
-          labels: auto-merge, fullstack, feature
+          labels: |
+            auto-merge
+            fullstack
+            feature
+            success
           auto-merge: true           # ✅ Key for automatic merging
           merge-method: squash
-
 
   # Step 2: Frontend (React + npm)
 # Step 2: Frontend (React + npm)
@@ -108,11 +111,11 @@ jobs:
       - name: Run Tests
         run: mvn test
 
-#  trigger-auto-merge:
-#    needs: [frontend, backend]
-#    if: ${{ success() }}
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Auto Merge Pull Request
-#
-#        run: echo "✅ Build & tests passed — ready for auto merge trigger"
+  trigger-auto-merge:
+    needs: [frontend, backend]
+    if: ${{ success() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Auto Merge Pull Request
+
+        run: echo "✅ Build & tests passed — ready for auto merge trigger"
