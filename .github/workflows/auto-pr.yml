@@ -111,11 +111,11 @@ jobs:
       - name: Run Tests
         run: mvn test
 
-  trigger-auto-merge:
-    needs: [frontend, backend]
-    if: ${{ success() }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Auto Merge Pull Request
-
-        run: echo "✅ Build & tests passed — ready for auto merge trigger"
+#  trigger-auto-merge:
+#    needs: [frontend, backend]
+#    if: ${{ success() }}
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Auto Merge Pull Request
+#
+#        run: echo "✅ Build & tests passed — ready for auto merge trigger"
