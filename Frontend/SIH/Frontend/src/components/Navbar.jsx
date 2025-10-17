@@ -687,9 +687,13 @@ export default function Navbar() {
                 >
                   {t("nav.login")}
                 </button>
-                <Link to="/login" className="bg-yellow-400 hover:bg-yellow-300 text-blue-900 px-5 py-2 rounded-lg font-bold shadow-lg transition-all duration-200 text-sm">
+                 <button 
+                  onClick={() => setIsLoginModalOpen(true)}
+                  className="bg-yellow-400 hover:bg-yellow-300 text-blue-900 px-5 py-2 rounded-lg font-bold shadow-lg transition-all duration-200 text-sm">
+                
                   {t("nav.signUp")}
-                </Link>
+                </button>
+       
               </div>
             )}
 
@@ -799,13 +803,22 @@ export default function Navbar() {
                 >
                   {t("nav.login")}
                 </button>
-                <Link 
+                    <button 
+                  onClick={() => {
+                    setIsLoginModalOpen(true);
+                    mobileMenu.close();
+                  }}
+                  className="block py-2.5 text-center bg-yellow-400 text-blue-900 rounded-lg font-bold hover:bg-yellow-300 transition-all duration-200 text-sm" 
+                >
+                  {t("nav.signUp")}
+                </button>
+                {/* <Link 
                   to="/login" 
                   className="block py-2.5 text-center bg-yellow-400 text-blue-900 rounded-lg font-bold hover:bg-yellow-300 transition-all duration-200 text-sm" 
                   onClick={mobileMenu.close}
                 >
                   {t("nav.signUp")}
-                </Link>
+                </Link> */}
               </div>
             ) : (
               <div className="px-4 border-t border-blue-700 pt-3 mt-3">

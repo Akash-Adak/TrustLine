@@ -33,7 +33,7 @@ const GoogleIcon = () => (
 
 export default function LoginPage({ isOpen, onClose }) {
   const navigate = useNavigate();
-var baseUrl = process.env.VITE_API_URL;
+const baseUrl = import.meta.env.VITE_API_URL;
   const [isLogin, setIsLogin] = useState(true);
   const [showOtp, setShowOtp] = useState(false);
   const [error, setError] = useState("");

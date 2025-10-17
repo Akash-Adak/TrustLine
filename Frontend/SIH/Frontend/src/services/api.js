@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Create axios instance
-var baseUrl = process.env.VITE_API_URL;
+const baseUrl = import.meta.env.VITE_API_URL;
 
 
 const api = axios.create({

@@ -36,13 +36,14 @@ jobs:
             fullstack
             feature
 
-  # Step 2: Frontend (React + Yarn)
+  # Step 2: Frontend (React + npm)
   frontend:
     runs-on: ubuntu-latest
     needs: create-pr
     defaults:
       run:
         working-directory: Frontend/SIH/Frontend
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -50,17 +51,25 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '20' # Match your local dev version
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci # Faster and safer than npm install for CI
+
+      - name: Run frontend tests
+        run: npm run test # Or npm run vitest if you're using Vitest
+
+      - name: Build frontend
+        run: npm run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend-build
+          path: Frontend/SIH/Frontend/dist
 
 
-      - name: Build
-        run: yarn build
-
-
-  # Step 3: Backend (Spring Boot + Maven)
+    # Step 3: Backend (Spring Boot + Maven)
   backend:
     runs-on: ubuntu-latest
     needs: create-pr
