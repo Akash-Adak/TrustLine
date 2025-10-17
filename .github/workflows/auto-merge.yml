@@ -1,9 +1,10 @@
 name: Auto Merge PR
 
 on:
-  pull_request:
+  workflow_run:
+    workflows: ["Full Stack Auto PR + Build + Auto Merge"]
     types:
-      - labeled
+      - completed
 
 jobs:
   auto-merge:
