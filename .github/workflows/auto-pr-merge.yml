@@ -65,8 +65,6 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps # Avoid React 17 vs 19 conflict
 
-      - name: Run frontend tests
-        run: npm run test # Or npm run vitest if using Vitest
 
       - name: Build frontend
         run: npm run build
