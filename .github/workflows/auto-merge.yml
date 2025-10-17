@@ -1,26 +1,18 @@
 name: Auto Merge After Successful Build
 
 on:
-  workflow_run:
-    workflows: ["Full Stack Auto PR + Build"]
-    types: [completed]
-
-permissions:
-  contents: write
-  pull-requests: write
+  pull_request_target:
+    types: [opened, labeled, synchronize]
 
 jobs:
   auto-merge:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: contains(github.event.pull_request.labels.*.name, 'auto-merge')
     steps:
-      - name: Wait for GitHub to register status
-        run: sleep 10
-
-      - name: Auto merge pull requests with label auto-merge
-        uses: pascalgn/automerge-action@v0.15.6
+      - uses: pascalgn/automerge-action@v0.15.6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MERGE_METHOD: squash
           MERGE_LABELS: auto-merge
-          MERGE_COMMIT_MESSAGE: "🎉 Auto merged after successful frontend & backend checks"
+          MERGE_COMMIT_MESSAGE: "🎉 Auto merged after successful build"
+
