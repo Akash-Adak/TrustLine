@@ -1,4 +1,4 @@
-name: Full Stack Auto PR + Build
+name: Full Stack Auto PR + Build + Auto Merge
 
 on:
   push:
@@ -13,6 +13,8 @@ jobs:
   # Step 1: Create or update Pull Request
   create-pr:
     runs-on: ubuntu-latest
+    outputs:
+      pr-number: ${{ steps.cpr.outputs.pull-request-number }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -23,6 +25,7 @@ jobs:
           echo "DEFAULT_BRANCH=$(git remote show origin | grep 'HEAD branch' | cut -d' ' -f5)" >> $GITHUB_ENV
 
       - name: Create or update Pull Request
+        id: cpr
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -36,18 +39,22 @@ jobs:
             fullstack
             feature
             success
-          auto-merge: true           # ✅ Key for automatic merging
+
+      - name: Enable Auto-Merge
+        if: ${{ steps.cpr.outputs.pull-request-operation == 'created' }}
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
           merge-method: squash
 
   # Step 2: Frontend (React + npm)
-# Step 2: Frontend (React + npm)
   frontend:
     runs-on: ubuntu-latest
     needs: create-pr
     defaults:
       run:
         working-directory: Frontend/SIH/Frontend
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -55,7 +62,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Match your local dev version
+          node-version: '20'
 
       - name: Cache node modules
         uses: actions/cache@v4
@@ -66,21 +73,18 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps # Avoid React 17 vs 19 conflict
-
+        run: npm install --legacy-peer-deps
 
       - name: Build frontend
         run: npm run build
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4 # ✅ Updated to v4
+        uses: actions/upload-artifact@v4
         with:
           name: frontend-build
-          path: Frontend/SIH/Frontend/dist
+          path: dist
 
-
-
-    # Step 3: Backend (Spring Boot + Maven)
+  # Step 3: Backend (Spring Boot + Maven)
   backend:
     runs-on: ubuntu-latest
     needs: create-pr
@@ -110,12 +114,3 @@ jobs:
 
       - name: Run Tests
         run: mvn test
-
-#  trigger-auto-merge:
-#    needs: [frontend, backend]
-#    if: ${{ success() }}
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Auto Merge Pull Request
-#
-#        run: echo "✅ Build & tests passed — ready for auto merge trigger"
