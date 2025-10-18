@@ -808,7 +808,7 @@ export default function Navbar() {
                     setIsLoginModalOpen(true);
                     mobileMenu.close();
                   }}
-                  className="block py-2.5 text-center bg-yellow-400 text-blue-900 rounded-lg font-bold hover:bg-yellow-300 transition-all duration-200 text-sm" 
+                  className="block w-full py-2.5 text-center text-white bg-blue-700 hover:bg-blue-600 rounded-lg transition-all duration-200 font-medium text-sm" 
                 >
                   {t("nav.signUp")}
                 </button>
