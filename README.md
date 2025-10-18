@@ -131,10 +131,13 @@ graph LR
 <div align="center">
 
 ### 🖥️ Desktop Experience
-<img src="https://via.placeholder.com/800x400/4F46E5/FFFFFF?text=Beautiful+Responsive+Dashboard" alt="Dashboard"/>
+<img width="1902" height="931" alt="{AEC2469F-BD3D-4549-94E6-874482F1DB8A}" src="https://github.com/user-attachments/assets/bf98d37d-82fd-472a-b837-40474d375b2c" />
+
+<!-- <img src="https://via.placeholder.com/800x400/4F46E5/FFFFFF?text=Beautiful+Responsive+Dashboard" alt="Dashboard"/> -->
 
 ### 📱 Mobile Experience
-<img src="https://via.placeholder.com/300x600/10B981/FFFFFF?text=Report+On+The+Go" alt="Mobile"/>
+<!-- <img src="https://via.placeholder.com/300x600/10B981/FFFFFF?text=Report+On+The+Go" alt="Mobile"/> -->
+<img width="374" height="817" alt="{EDFC0874-6C16-41A6-993D-146473DAC9DC}" src="https://github.com/user-attachments/assets/4b80d384-ad32-446d-b1bd-972965add938" />
 
 > **PWA Ready** - Install it, use it offline, get push notifications!
 
