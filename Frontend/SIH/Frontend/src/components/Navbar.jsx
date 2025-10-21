@@ -423,7 +423,7 @@ export default function Navbar() {
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-2xl font-bold text-white tracking-wide">TrustLine</span>
+              <span className="text-2xl font-bold text-white tracking-wide">DigitalNagrik</span>
               <span className="text-yellow-300 text-xs font-medium hidden sm:inline">Government of India Initiative</span>
             </div>
           </Link>
