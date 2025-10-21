@@ -25,7 +25,7 @@ const Footer = () => {
                 />
               </div>
               <span className="text-2xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
-                TrustLine
+                DigitalNagrik
               </span>
             </Link>
             <p className="text-gray-300 leading-relaxed mb-6 text-sm lg:text-base">
