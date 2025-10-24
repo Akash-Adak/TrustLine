@@ -1,8 +1,8 @@
-# 🏛️ TrustLine
+# 🏛️ DigitalNagrik
 
 <div align="center">
 
-![TrustLine](https://img.shields.io/badge/TrustLine-Civic%20%26%20Cyber%20Reporting-4F46E5?style=for-the-badge)
+![DigitalNagrik](https://img.shields.io/badge/DigitalNagrik-Civic%20%26%20Cyber%20Reporting-4F46E5?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
 ![PWA](https://img.shields.io/badge/PWA-Ready-purple?style=for-the-badge)
 
@@ -10,15 +10,15 @@
 
 **Report Issues. Track Progress. Make a Difference.**
 
-[🎯 Quick Start](#-quick-start) • [✨ Features](#-what-makes-trustline-special) • [🛠️ Stack](#️-tech-stack) • [📸 Screenshots](#-preview)
+[🎯 Quick Start](#-quick-start) • [✨ Features](#-what-makes-DigitalNagrik-special) • [🛠️ Stack](#️-tech-stack) • [📸 Screenshots](#-preview)
 
 </div>
 
 ---
 
-## 💡 What is TrustLine?
+## 💡 What is DigitalNagrik?
 
-Ever seen a pothole, broken streetlight, or experienced a cyber scam and wanted to report it? **TrustLine makes it dead simple.**
+Ever seen a pothole, broken streetlight, or experienced a cyber scam and wanted to report it? **DigitalNagrik makes it dead simple.**
 
 ```
 👤 Citizen Reports Issue → 🤖 AI Detects Type (2 min) → 📍 Maps Location → 
@@ -27,7 +27,7 @@ Ever seen a pothole, broken streetlight, or experienced a cyber scam and wanted 
 
 ---
 
-## ✨ What Makes TrustLine Special?
+## ✨ What Makes DigitalNagrik Special?
 
 <table>
 <tr>
@@ -156,8 +156,8 @@ graph LR
 ### 1️⃣ Clone & Setup Backend
 
 ```bash
-git clone https://github.com/Akash-Adak/TrustLine.git
-cd TrustLine/backend
+git clone https://github.com/Akash-Adak/DigitalNagrik.git
+cd DigitalNagrik/backend
 
 # Edit application.properties with your DB credentials
 mvn clean install
@@ -256,15 +256,15 @@ Found a bug? Have a cool idea? **We'd love your help!**
 
 ## 📞 Need Help?
 
-- 🐛 **Found a bug?** [Open an issue](https://github.com/Akash-Adak/TrustLine/issues)
-- 💡 **Have an idea?** [Start a discussion](https://github.com/Akash-Adak/TrustLine/discussions)
-- 📧 **Email:** support@trustline.gov
+- 🐛 **Found a bug?** [Open an issue](https://github.com/Akash-Adak/DigitalNagrik/issues)
+- 💡 **Have an idea?** [Start a discussion](https://github.com/Akash-Adak/DigitalNagrik/discussions)
+- 📧 **Email:** support@DigitalNagrik.gov
 
 ---
 
 ## ⭐ Show Some Love
 
-If TrustLine helped your community, **star this repo!** ⭐
+If DigitalNagrik helped your community, **star this repo!** ⭐
 
 ---
 
@@ -274,7 +274,7 @@ If TrustLine helped your community, **star this repo!** ⭐
 
 **Made by [Akash Adak](https://github.com/Akash-Adak)**
 
-![GitHub stars](https://img.shields.io/github/stars/Akash-Adak/TrustLine?style=social)
-![GitHub forks](https://img.shields.io/github/forks/Akash-Adak/TrustLine?style=social)
+![GitHub stars](https://img.shields.io/github/stars/Akash-Adak/DigitalNagrik?style=social)
+![GitHub forks](https://img.shields.io/github/forks/Akash-Adak/DigitalNagrik?style=social)
 
 </div>
